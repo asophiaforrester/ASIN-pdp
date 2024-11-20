@@ -17,19 +17,13 @@ if st.button("Open All Links"):
         urls = generate_urls(base_url, asin_list)
         
         # Generate JavaScript to open all URLs
-        js_code = ""
+        js_code = "<script>\n"
         for url in urls:
             js_code += f"window.open('{url}', '_blank');\n"
-        
-        # Inject JavaScript into the browser
-        st.markdown(
-            f"""
-            <script>
-            {js_code}
-            </script>
-            """,
-            unsafe_allow_html=True,
-        )
-        st.success("Links are being opened in new tabs!")
+        js_code += "</script>"
+
+        # Inject JavaScript directly into the browser using st.components
+        st.components.v1.html(js_code, height=0)
+        st.success(f"Opened {len(urls)} links in new tabs!")
     else:
         st.warning("Please enter at least one ASIN.")
